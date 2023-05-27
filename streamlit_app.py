@@ -1,3 +1,4 @@
+
 import streamlit as st
 import openai
 import os
@@ -5,6 +6,8 @@ import os
 # Obtener la clave de API de OpenAI desde una variable de entorno
 api_key = os.getenv("OPENAI_API_KEY")
 
+# Configurar la API de OpenAI
+openai.api_key = api_key
 
 def main():
     st.title("Comparación de Filósofos")
@@ -19,10 +22,11 @@ def main():
     ]
 
     # Obtener el problema del usuario
-    problema = st.text_input("Ingresa el problema que quieres comparar (no más de seis)", "")
+    problema = st.text_input("Ingresa el problema que quieres comparar", "")
 
     # Obtener los filósofos seleccionados por el usuario
-    filosofos_seleccionados = st.multiselect("Selecciona los filósofos que quieres comparar", filosofos)
+    filosofos_seleccionados = st.multiselect("Selecciona los filósofos que quieres comparar",
+                                             filosofos, max_selections=5)
 
     if st.button("Comparar") and filosofos_seleccionados:
         st.subheader("Posiciones de los Filósofos:")
@@ -31,9 +35,10 @@ def main():
             respuesta = openai.Completion.create(
                 engine="text-davinci-003",
                 prompt=f"Problema: {problema}\n\nFilósofo: {filosofo}",
-                max_tokens=800,
-                temperature=0.7,
-                stop=None
+                max_tokens=800,  # Ajusta el valor de max_tokens según tu preferencia
+                temperature=0.6,
+                stop=None,
+                api_key=api_key
             )
 
             # Mostrar la posición del filósofo actual
@@ -42,3 +47,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
