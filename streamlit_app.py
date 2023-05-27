@@ -1,9 +1,10 @@
 import streamlit as st
 import openai
+import pandas as pd
 import os
 
-# Establecer la clave de API de OpenAI
-openai.api_key = os.getenv('OPENAI_API_KEY')
+# Obtener la clave de API de OpenAI desde una variable de entorno
+api_key = os.getenv("OPENAI_API_KEY")
 
 
 
@@ -29,19 +30,20 @@ def main():
         respuestas = openai.Completion.create(
             engine="text-davinci-003",
             prompt=f"Problema: {problema}\n\nFilósofos: {', '.join(filosofos_seleccionados)}",
-            max_tokens=500,  # Aumentar la cantidad de tokens para obtener una respuesta más larga
+            max_tokens=500,
             n=len(filosofos_seleccionados),
             temperature=0.6,
             stop=None
-
+            
         )
 
-        # Mostrar las posiciones de los filósofos
+        # Crear un DataFrame con los resultados
+        data = {"Filósofo": filosofos_seleccionados, "Posición": [choice.text.strip() for choice in respuestas.choices]}
+        df = pd.DataFrame(data)
+
+        # Mostrar los resultados en una tabla
         st.subheader("Posiciones de los Filósofos:")
-        for i, filosofo in enumerate(filosofos_seleccionados):
-            posicion = respuestas.choices[i].text.strip()
-            st.write(f"- {filosofo}:")
-            st.write(posicion)
+        st.dataframe(df)
 
 if __name__ == "__main__":
     main()
