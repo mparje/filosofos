@@ -1,11 +1,9 @@
 import streamlit as st
 import openai
-import pandas as pd
 import os
 
 # Obtener la clave de API de OpenAI desde una variable de entorno
 api_key = os.getenv("OPENAI_API_KEY")
-
 
 
 def main():
@@ -26,24 +24,20 @@ def main():
     filosofos_seleccionados = st.multiselect("Selecciona los filósofos que quieres comparar", filosofos)
 
     if st.button("Comparar") and filosofos_seleccionados:
-        # Realizar llamada a la API de OpenAI para obtener las posiciones de los filósofos seleccionados
-        respuestas = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=f"Problema: {problema}\n\nFilósofos: {', '.join(filosofos_seleccionados)}",
-            max_tokens=500,
-            n=len(filosofos_seleccionados),
-            temperature=0.6,
-            stop=None
-            
-        )
-
-        # Crear un DataFrame con los resultados
-        data = {"Filósofo": filosofos_seleccionados, "Posición": [choice.text.strip() for choice in respuestas.choices]}
-        df = pd.DataFrame(data)
-
-        # Mostrar los resultados en una tabla
         st.subheader("Posiciones de los Filósofos:")
-        st.dataframe(df)
+        for filosofo in filosofos_seleccionados:
+            # Realizar llamada a la API de OpenAI para obtener la posición del filósofo actual
+            respuesta = openai.Completion.create(
+                engine="text-davinci-003",
+                prompt=f"Problema: {problema}\n\nFilósofo: {filosofo}",
+                max_tokens=500,
+                temperature=0.6,
+                stop=None
+            )
+
+            # Mostrar la posición del filósofo actual
+            st.write(f"- {filosofo}:")
+            st.write(respuesta.choices[0].text.strip())
 
 if __name__ == "__main__":
     main()
