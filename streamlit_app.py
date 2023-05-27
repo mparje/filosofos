@@ -12,9 +12,10 @@ def main():
 
     # Definir la lista de filósofos
     filosofos = [
-        "Platón", "Aristóteles", "San Agustín", "Santo Tomás de Aquino", "Guillermo de Ockham",
-        "Descartes", "Locke", "Hume", "Hobbes", "Kant", "Hegel", "Marx", "Nietzsche",
-        "Heidegger", "Wittgenstein", "Dewey", "Putnam", "Rorty"
+        "Platón", "Aristóteles", "San Agustín", "Santo Tomás de Aquino", "Guillermo de Ockham", "Duns Escoto",
+        "Descartes", "Leibniz", "Spinoza", "Locke", "Hume", "Hobbes", "Kant", "Hegel", "Marx", "Nietzsche",
+        "Heidegger", "Wittgenstein", "W. James", "Dewey", "Putnam", "Rorty", "Ayn Rand", "Derrida", "Foucault",
+        "John Rawls", "Nozick", "Charles Taylor"
     ]
 
     # Obtener el problema del usuario
