@@ -30,8 +30,7 @@ def main():
             max_tokens=500,
             n=len(filosofos_seleccionados),
             temperature=0.6,
-            stop=None,
-            log_level="info"
+            stop=None
         )
 
         # Mostrar las posiciones de los filósofos
