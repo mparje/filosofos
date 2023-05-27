@@ -3,7 +3,7 @@ import openai
 import os
 
 # Establecer la clave de API de OpenAI
-openai.api_key = osgetenv('OPENAI_API_KEY')
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 def generate_text(prompt):
     response = openai.Completion.create(
