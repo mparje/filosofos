@@ -5,17 +5,6 @@ import os
 # Establecer la clave de API de OpenAI
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
-def generate_text(prompt):
-    response = openai.Completion.create(
-        engine='text-davinci-003',
-        prompt=prompt,
-        max_tokens=500,
-        n=1,
-        stop=None,
-        temperature=0.8
-    )
-    return response.choices[0].text.strip()
-
 def main():
     st.title("Comparación de Filósofos")
     st.write("Esta aplicación compara las posiciones de varios filósofos sobre un problema dado.")
@@ -30,17 +19,27 @@ def main():
     # Obtener el problema del usuario
     problema = st.text_input("Ingresa el problema que quieres comparar", "")
 
-    if st.button("Comparar"):
-        # Generar el texto de las posiciones de los filósofos utilizando el modelo text-davinci-003
-        prompt = f"Problema: {problema}\n\nPosiciones de los filósofos:\n"
-        for filosofo in filosofos:
-            prompt += f"- {filosofo}: [Posición del filósofo]\n"
+    # Obtener los filósofos seleccionados por el usuario
+    filosofos_seleccionados = st.multiselect("Selecciona los filósofos que quieres comparar", filosofos)
 
-        posiciones = generate_text(prompt)
+    if st.button("Comparar") and filosofos_seleccionados:
+        # Realizar llamada a la API de OpenAI para obtener las posiciones de los filósofos seleccionados
+        respuestas = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=f"Problema: {problema}\n\nFilósofos: {', '.join(filosofos_seleccionados)}",
+            max_tokens=500,
+            n=len(filosofos_seleccionados),
+            temperature=0.6,
+            stop=None,
+            log_level="info"
+        )
 
         # Mostrar las posiciones de los filósofos
         st.subheader("Posiciones de los Filósofos:")
-        st.write(posiciones)
+        for i, filosofo in enumerate(filosofos_seleccionados):
+            posicion = respuestas.choices[i].text.strip()
+            st.write(f"- {filosofo}:")
+            st.write(posicion)
 
 if __name__ == "__main__":
     main()
