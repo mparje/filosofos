@@ -19,7 +19,7 @@ def main():
     ]
 
     # Obtener el problema del usuario
-    problema = st.text_input("Ingresa el problema que quieres comparar", "")
+    problema = st.text_input("Ingresa el problema que quieres comparar (no más de seis)", "")
 
     # Obtener los filósofos seleccionados por el usuario
     filosofos_seleccionados = st.multiselect("Selecciona los filósofos que quieres comparar", filosofos)
@@ -31,7 +31,7 @@ def main():
             respuesta = openai.Completion.create(
                 engine="text-davinci-003",
                 prompt=f"Problema: {problema}\n\nFilósofo: {filosofo}",
-                max_tokens=650,
+                max_tokens=800,
                 temperature=0.7,
                 stop=None
             )
