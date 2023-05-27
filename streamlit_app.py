@@ -5,6 +5,8 @@ import os
 # Establecer la clave de API de OpenAI
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
+
+
 def main():
     st.title("Comparación de Filósofos")
     st.write("Esta aplicación compara las posiciones de varios filósofos sobre un problema dado.")
@@ -27,10 +29,11 @@ def main():
         respuestas = openai.Completion.create(
             engine="text-davinci-003",
             prompt=f"Problema: {problema}\n\nFilósofos: {', '.join(filosofos_seleccionados)}",
-            max_tokens=500,
+            max_tokens=500,  # Aumentar la cantidad de tokens para obtener una respuesta más larga
             n=len(filosofos_seleccionados),
             temperature=0.6,
             stop=None
+
         )
 
         # Mostrar las posiciones de los filósofos
